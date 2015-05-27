@@ -4,7 +4,7 @@ Amazon EBS Snapshot tool
 # Installation
 
 ```
-bundle install --path ./
+$ bundle install --path ./
 ```
 
 # How to use
