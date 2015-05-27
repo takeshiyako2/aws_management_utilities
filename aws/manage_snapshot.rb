@@ -8,7 +8,7 @@ require 'constellation'
 
 class MyConfiguration
   Constellation.enhance self
-  self.config_file = ARGV[0]
+  self.config_file = File.expand_path(File.dirname($0)) + '/../config/manage_snapshot.yml'
 end
 
 class ManageSnapshot
