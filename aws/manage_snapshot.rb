@@ -8,7 +8,7 @@ require 'constellation'
 
 class MyConfiguration
   Constellation.enhance self
-  self.config_file = "~/.config.yml"
+  self.config_file = ARGV[0]
 end
 
 class ManageSnapshot
@@ -24,8 +24,8 @@ class ManageSnapshot
     @secret_key  = opt[:secret_key]    || config.aws['secret_key']
     @owner_id    = opt[:owner_id].try(:to_s) || config.aws['owner_id'].to_s
     @region      = opt[:region]        || config.aws['region']
-    @volume_id   = opt[:volume_id]     || config.ebs['volume_id']
-    @description = opt[:description]   || config.ebs['description']
+    @instance_names = opt[:instance_names]    || config.ec2['instance_names']
+    @description = opt[:description]   || config.ec2['description']
     @long_period = opt[:long_period]   || 12.hour
     @short_period = opt[:short_period] || 2.hour
   end
@@ -42,7 +42,15 @@ class ManageSnapshot
 
   def create_snapshot
     puts '[INFO] Create snapshot.'
-    ec2.volumes[volume_id].create_snapshot(description)
+    ec2.instances.each do |i|
+      name = i.tags['Name']
+      if i.status.to_s == 'running'
+        if @instance_names.include?(name)
+          puts "[INFO] => #{name}"
+          ec2.volumes[i.block_devices[0][:ebs][:volume_id]].create_snapshot(description + '-' + name)
+        end
+      end
+    end
   end
 
   def check_status_snapshot(snapshots = select_owners_and_same_description_snapshots)
@@ -70,7 +78,7 @@ class ManageSnapshot
 
   def select_owners_and_same_description_snapshots
     puts '[INFO] Select owners and same description snapshots.'
-    ec2.snapshots.with_owner(owner_id).select{ |snapshot| snapshot.description == description }
+    ec2.snapshots.with_owner(owner_id).select{ |snapshot| snapshot.description =~ /^#{description}/ }
   end
 end
 
@@ -84,13 +92,13 @@ if __FILE__ == $0
 
     Mail.defaults do
       delivery_method :smtp, {
-        :address              => "smtp.gmail.com",
-        :port                 => 587,
-        :domain               => 'smtp.gmail.com',
-        :user_name            => config.gmail['from'],
-        :password             => config.gmail['password'],
-        :authentication       => 'plain',
-        :enable_starttls_auto => true
+#        :address              => "smtp.gmail.com",
+#        :port                 => 587,
+#        :domain               => 'smtp.gmail.com',
+#        :user_name            => config.gmail['from'],
+#        :password             => config.gmail['password'],
+#        :authentication       => 'plain',
+#        :enable_starttls_auto => true
       }
       # For test mail
       # delivery_method :test
