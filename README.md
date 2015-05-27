@@ -33,5 +33,5 @@ gmail:
 
 Run script.
 ```
-$ ruby aws/manage_snapshot_all.rb
+$ ruby aws/manage_snapshot.rb
 ```
