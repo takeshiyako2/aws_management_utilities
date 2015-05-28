@@ -35,3 +35,7 @@ Run script.
 ```
 $ ruby aws/manage_snapshot.rb
 ```
+
+# TODO
+
+Write test.
