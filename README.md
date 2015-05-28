@@ -1,6 +1,10 @@
 Amazon EBS Snapshot tool
 
 
+# Description
+
+Create the EBS snapshot of each EC2 instance.
+
 # Installation
 
 ```
@@ -39,3 +43,9 @@ $ ruby aws/manage_snapshot.rb
 # TODO
 
 Write test.
+
+# Origin
+
+https://github.com/interu/management_utilities
+
+
