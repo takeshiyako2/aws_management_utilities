@@ -5,6 +5,9 @@ Amazon EBS Snapshot tool
 
 Create the EBS snapshot of each EC2 instance.
 
+Warning: It will create a snapshot of one EBS device only.
+
+
 # Installation
 
 ```
