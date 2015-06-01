@@ -40,7 +40,7 @@ gmail:
 
 Run script.
 ```
-$ ruby aws/manage_snapshot.rb
+$ bundle exec ruby aws/manage_snapshot.rb
 ```
 
 # TODO
