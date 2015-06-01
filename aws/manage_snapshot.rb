@@ -26,7 +26,7 @@ class ManageSnapshot
     @region      = opt[:region]        || config.aws['region']
     @instance_names = opt[:instance_names]    || config.ec2['instance_names']
     @description = opt[:description]   || config.ec2['description']
-    @long_period = opt[:long_period]   || 12.hour
+    @long_period = opt[:long_period]   || 168.hour
     @short_period = opt[:short_period] || 2.hour
   end
 
